@@ -24,6 +24,7 @@ public class SMSUtils {
                     //System.out.println(" " + cursor.getColumnName(idx) + ":" + cursor.getString(idx));
                     //System.out.println("******************END OF LINE**************************");
                     //
+                    //System.out.println(cursor.getColumnName(idx));
                 }
                 // use msgData
                 //Toast.makeText(MainActivity.this,msgData.toString(),Toast.LENGTH_LONG);
