@@ -24,15 +24,10 @@ public class SMSUtils {
         //Cursor cursor = getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
         if (cursor.moveToFirst()) { // must check the result to prevent exception
             do {
-                //String msgData = "";
                 SMS msg = new SMS();
-                System.out.println("******************START of NEW SMS**************************");
+                //System.out.println("******************START of NEW SMS**************************");
 
                 for (int idx = 0; idx < cursor.getColumnCount(); idx++) {
-                    //TODO generate a json array with this info
-                    //msgData += " " + cursor.getColumnName(idx) + ":" + cursor.getString(idx);
-                    //System.out.println(" " + cursor.getColumnName(idx) + ":" + cursor.getString(idx));
-                    //System.out.println(" " + cursor.getColumnName(idx));
                     if ("_id".equals(cursor.getColumnName(idx)))
                         msg.set_id(cursor.getString(idx));
                     if ("thread_id".equals(cursor.getColumnName(idx)))
@@ -71,11 +66,9 @@ public class SMSUtils {
                         msg.setError_code(cursor.getString(idx));
 
                 }
-                System.out.println("*******************END MESSAGE**********************");
-                // use msgData
-                readSMS().add(msg);
-                //Toast.makeText(MainActivity.this,msgData.toString(),Toast.LENGTH_LONG);
-                //System.out.println(msgData);
+
+                msgs.add(msg);
+
             } while (cursor.moveToNext());
         } else {
             // empty box, no SMS
@@ -90,8 +83,6 @@ public class SMSUtils {
     public void deleteSMS(String message, String number) {
         try {
             //mLogger.logInfo("Deleting SMS from inbox");
-
-
             if (cursor != null && cursor.moveToFirst()) {
                 do {
                     long id = cursor.getLong(0);
@@ -118,16 +109,13 @@ public class SMSUtils {
             if (cursor != null && cursor.moveToFirst()) {
                 do {
                     long id = cursor.getLong(0);
-
                     context.getContentResolver().delete(
                             Uri.parse(uri + id), null, null);
-
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
             System.out.println("ERROR " + e.getMessage());
         }
     }
-
 
 }

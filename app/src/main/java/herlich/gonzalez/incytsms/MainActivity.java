@@ -19,8 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     //esta es la url del servicio web donde se envian los mensajitos
 
-    String url = "https://arcgis-web.url.edu.gt/";
-
+    String urlPost = "https://arcgis-web.url.edu.gt/incyt/api/sms/postSMS";
     SMSUtils msgSMS;
 
     @Override
@@ -33,11 +32,13 @@ public class MainActivity extends AppCompatActivity {
 
         msgSMS = new SMSUtils(getApplicationContext());
         ArrayList<SMS> msgs = msgSMS.readSMS();
-        JSONUtils jUtil = new JSONUtils(getApplicationContext(), url);
+        JSONUtils jUtil = new JSONUtils(getApplicationContext(), urlPost);
+        System.out.println(msgs.size());
         for (int i = 0; i < msgs.size(); i++) {
             jUtil.postMessage(msgs.get(i));
+            //System.out.println(msgs.get(i));
         }
-
+        //TODO delete sms from mobil
 
     }
 

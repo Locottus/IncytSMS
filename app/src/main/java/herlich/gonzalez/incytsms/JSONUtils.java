@@ -2,6 +2,7 @@ package herlich.gonzalez.incytsms;
 
 import android.content.Context;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -16,6 +17,7 @@ import org.json.JSONObject;
 
 public class JSONUtils {
 
+    private int   MY_SOCKET_TIMEOUT_MS = 10000;
     private Context context;
     private String url;
 
@@ -48,7 +50,7 @@ public class JSONUtils {
             postparams.put("callback_number", msg.getCallback_number());
             postparams.put("error_code", msg.getError_code());
 
-            System.out.println("********************************************");
+            //System.out.println("********************************************");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -59,11 +61,12 @@ public class JSONUtils {
 
                     @Override
                     public void onResponse(Object response) {
-                        System.out.println("******************************************** YAY");
+                        //System.out.println("******************************************** YAY");
                         System.out.println(response.toString());
                         Gson gson = new Gson();
                         MsgAnswer answer = gson.fromJson(response.toString(), MsgAnswer.class);
-                        System.out.println(answer.getId() + " " + answer.getMsg());
+                        //System.out.println(answer.getId() + " " + answer.getMsg());
+                        //System.out.println(response);
                         //if (answer.getMsg().equals("ok"))
                         //    dbo.updateMsgStatus(cm);
                     }
@@ -72,10 +75,15 @@ public class JSONUtils {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         //Failure Callback
-                        System.out.println("********************************************BOOO! error enviando json");
-                        System.out.println("error at doing it!");
+                        //System.out.println("********************************************BOOO! error enviando json");
+                        System.out.println(error);
                     }
                 });
+
+        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(jsonObjReq);
