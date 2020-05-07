@@ -5,9 +5,10 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 
 import java.util.ArrayList;
 
@@ -27,25 +28,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        System.out.println("iniciando MAIN");
-
-        if (checkAccess())
-            ejecutaProcesos();
-
     }
 
-    private void ejecutaProcesos() {
-        msgSMS = new SMSUtils(getApplicationContext());
-        ArrayList<SMS> msgs = msgSMS.readSMS();
-        JSONUtils jUtil = new JSONUtils(getApplicationContext(), urlPost);
-        System.out.println(msgs.size());
-        for (int i = 0; i < msgs.size(); i++) {
-            //jUtil.postMessage(msgs.get(i));//aqui envia sms por sms
-            //System.out.println(msgs.get(i));
-        }
-        //TODO delete sms from mobil
-
+    public void startJobService(View view) {
+        Intent i = new Intent(this, MyJobIntentService.class);
+        //i.putExtra("tiempo", 25);
+        MyJobIntentService.enqueuedWork(this,i);
     }
+
 
     private boolean checkAccess() {
         boolean access = false;
@@ -56,10 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 android.Manifest.permission.VIBRATE,
                 Manifest.permission.READ_SMS,
                 Manifest.permission.SEND_SMS,
-                Manifest.permission.BROADCAST_SMS,
-                Manifest.permission.RECEIVE_BOOT_COMPLETED,
-                Manifest.permission.WAKE_LOCK
-
+                Manifest.permission.BROADCAST_SMS
 
         };
         if (!hasPermissions(this, PERMISSIONS)) {
