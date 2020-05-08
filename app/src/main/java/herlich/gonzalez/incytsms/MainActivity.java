@@ -27,13 +27,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        checkAccess();
 
     }
 
+
     public void startJobService(View view) {
+        System.out.print("intenting to start job service");
         Intent i = new Intent(this, MyJobIntentService.class);
         //i.putExtra("tiempo", 25);
-        MyJobIntentService.enqueuedWork(this,i);
+        MyJobIntentService.enqueuedWork(this, i);
     }
 
 
@@ -47,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
                 Manifest.permission.READ_SMS,
                 Manifest.permission.SEND_SMS,
                 Manifest.permission.BROADCAST_SMS
-
         };
+
         if (!hasPermissions(this, PERMISSIONS)) {
             ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
             access = true;
