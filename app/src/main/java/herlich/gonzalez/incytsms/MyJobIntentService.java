@@ -47,7 +47,7 @@ public class MyJobIntentService extends JobIntentService {
         while(true) {
             backgroundToast(getApplicationContext()," SMS INCYT BACKGROUND MESSAGE RUNNING");
             try {
-                Thread.sleep(60000);//jede 30 minute es arbeitet
+                Thread.sleep(60000);//TODO HACERLO DINAMICO
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -102,7 +102,6 @@ public class MyJobIntentService extends JobIntentService {
     }
 
     public void backgroundToast(final Context context, final String msg) {
-//        if (enabledUI) {
             if (context != null && msg != null) {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
@@ -111,7 +110,6 @@ public class MyJobIntentService extends JobIntentService {
                     }
                 });
             }
-  //      }
     }
 
 }

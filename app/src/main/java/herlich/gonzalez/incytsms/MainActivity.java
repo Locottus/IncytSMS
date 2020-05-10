@@ -18,17 +18,11 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    //esta es la url del servicio web donde se envian los mensajitos
-
-    String urlPost = "https://arcgis-web.url.edu.gt/incyt/api/sms/postSMS";
-    SMSUtils msgSMS;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         checkAccess();
-
     }
 
 
@@ -39,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
         MyJobIntentService.enqueuedWork(this, i);
     }
 
+    public void saveSettings(View view) {
+        //TODO READ AND SAVE SETTINGS HERE
+    }
 
     private boolean checkAccess() {
         boolean access = false;
@@ -69,5 +66,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
+
 
 }
