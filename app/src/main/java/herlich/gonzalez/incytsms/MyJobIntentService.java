@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 public class MyJobIntentService extends JobIntentService {
 
+    //TODO LOAD SETTINGS FROM SAVE PREFERENCES
     String urlPost = "https://arcgis-web.url.edu.gt/incyt/api/sms/postSMS";
     SMSUtils msgSMS;
     private static final String TAG = MyJobIntentService.class.getSimpleName();
@@ -42,8 +43,7 @@ public class MyJobIntentService extends JobIntentService {
     }
 
     private void thread() {
-//        Toast.makeText(this, "task Execution ON THE WAY!!!!", Toast.LENGTH_LONG).show();
-        System.out.println("TODO SOMETHING AWESOME HERE INSIDE THE JOBINTENT");
+
         while(true) {
             backgroundToast(getApplicationContext()," SMS INCYT BACKGROUND MESSAGE RUNNING");
             try {
@@ -64,7 +64,7 @@ public class MyJobIntentService extends JobIntentService {
         }
     }
 
-
+/*
     private void threadLoop() {
         try {
             Thread t1 = new Thread(new Runnable() {
@@ -100,6 +100,7 @@ public class MyJobIntentService extends JobIntentService {
             System.out.println(ex.getMessage());
         }
     }
+*/
 
     public void backgroundToast(final Context context, final String msg) {
             if (context != null && msg != null) {

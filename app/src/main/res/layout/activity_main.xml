@@ -14,18 +14,18 @@
         android:padding="10dp">
 
         <EditText
-            android:id="@+id/editText3"
+            android:id="@+id/urlText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:layout_margin="30px"
-            android:hint="URL Servicio" />
+            android:hint="URL Servicio POST" />
 
         <EditText
-            android:id="@+id/editText4"
+            android:id="@+id/tiempoText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Tiempo del Ciclo"
+            android:hint="Tiempo del Ciclo EN MINUTOS"
             android:ems="10"
             android:layout_margin="30px"
             android:inputType="number" />
