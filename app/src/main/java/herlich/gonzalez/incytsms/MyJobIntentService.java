@@ -14,13 +14,12 @@ import java.util.ArrayList;
 
 public class MyJobIntentService extends JobIntentService {
 
-    //TODO LOAD SETTINGS FROM SAVE PREFERENCES
-    String urlPost = "https://arcgis-web.url.edu.gt/incyt/api/sms/postSMS";
-    SMSUtils msgSMS;
+
+    private SMSUtils msgSMS;
     private static final String TAG = MyJobIntentService.class.getSimpleName();
 
     public static void enqueuedWork(Context context, Intent intent) {
-        enqueueWork(context, MyJobIntentService.class, 1137, intent);
+        enqueueWork(context, MyJobIntentService.class, 1179, intent);
     }
 
     @Override
@@ -45,16 +44,16 @@ public class MyJobIntentService extends JobIntentService {
     private void thread() {
 
         while(true) {
-            backgroundToast(getApplicationContext()," SMS INCYT BACKGROUND MESSAGE RUNNING");
+            SettingData sd = loadSettings();
             try {
-                Thread.sleep(60000);//TODO HACERLO DINAMICO
+                Thread.sleep(1000 * sd.getDelayPeriod());//TODO HACERLO DINAMICO
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
+            backgroundToast(getApplicationContext()," SMS INCYT BACKGROUND RUNNING");
             msgSMS = new SMSUtils(getApplicationContext());
             ArrayList<SMS> msgs = msgSMS.readSMS();
-            JSONUtils jUtil = new JSONUtils(getApplicationContext(), urlPost);
+            JSONUtils jUtil = new JSONUtils(getApplicationContext(), sd.getUrlPost());
             System.out.println(msgs.size());
             for (int i = 0; i < msgs.size(); i++) {
                 jUtil.postMessage(msgs.get(i));//aqui envia sms por sms
@@ -64,43 +63,11 @@ public class MyJobIntentService extends JobIntentService {
         }
     }
 
-/*
-    private void threadLoop() {
-        try {
-            Thread t1 = new Thread(new Runnable() {
-                public void run() {
-                    while (true) {
-                        backgroundToast(getApplicationContext()," SMS INCYT BACKGROUND MESSAGE RUNNING");
-                        System.out.println("TODO SOMETHING AWESOME HERE INSIDE THE JOBINTENT");
-                        try {
-                            Thread.sleep(25000);//30 minuten Dienst
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            msgSMS = new SMSUtils(getApplicationContext());
-                            ArrayList<SMS> msgs = msgSMS.readSMS();
-                            JSONUtils jUtil = new JSONUtils(getApplicationContext(), urlPost);
-                            System.out.println(msgs.size());
-
-                            for (int i = 0; i < msgs.size(); i++) {
-                                jUtil.postMessage(msgs.get(i));//aqui envia sms por sms
-                            }
-                            //TODO delete sms from mobil
-
-                        } catch (Exception ex) {
-                            System.out.println("HUBO UN ERROR EN LOS SMS " + ex.getMessage());
-                        }
-
-                    }
-                }
-            });
-            t1.start();
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
+    private SettingData loadSettings(){
+        SavePrefs sp = new SavePrefs(getApplicationContext());
+        return sp.getPreferences();
     }
-*/
+
 
     public void backgroundToast(final Context context, final String msg) {
             if (context != null && msg != null) {
