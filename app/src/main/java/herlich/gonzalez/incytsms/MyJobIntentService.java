@@ -7,15 +7,12 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
-
 import androidx.core.app.JobIntentService;
-
 import java.util.ArrayList;
 
 public class MyJobIntentService extends JobIntentService {
 
 
-    private SMSUtils msgSMS;
     private static final String TAG = MyJobIntentService.class.getSimpleName();
 
     public static void enqueuedWork(Context context, Intent intent) {
@@ -26,7 +23,7 @@ public class MyJobIntentService extends JobIntentService {
     public void onCreate() {
         super.onCreate();
         Log.i(TAG, "onCreate myJobIntentService Thread Name: " + Thread.currentThread().getName());
-        Toast.makeText(this, "task Execution starts ", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "task Execution starts ", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -38,28 +35,31 @@ public class MyJobIntentService extends JobIntentService {
     public void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "onDestroy myJobIntentService Thread Name: " + Thread.currentThread().getName());
-        Toast.makeText(this, "task Execution ends ", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "task Execution ends ", Toast.LENGTH_LONG).show();
     }
 
     private void thread() {
 
         while(true) {
-            SettingData sd = loadSettings();
+            SettingData sd = loadSettings();//get settings on the fly
             try {
-                Thread.sleep(1000 * sd.getDelayPeriod());//TODO HACERLO DINAMICO
+                Thread.sleep(60000 * sd.getDelayPeriod());//TODO MODIFICAR EL CALCULO
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             backgroundToast(getApplicationContext()," SMS INCYT BACKGROUND RUNNING");
-            msgSMS = new SMSUtils(getApplicationContext());
+            SMSUtils msgSMS  = new SMSUtils(getApplicationContext());
             ArrayList<SMS> msgs = msgSMS.readSMS();
             JSONUtils jUtil = new JSONUtils(getApplicationContext(), sd.getUrlPost());
             System.out.println(msgs.size());
             for (int i = 0; i < msgs.size(); i++) {
-                jUtil.postMessage(msgs.get(i));//aqui envia sms por sms
+                boolean exito = jUtil.postMessage(msgs.get(i));//aqui envia sms por sms
+                if (exito){
+                    //TODO delete sms from mobil
+                    msgSMS.deleteSMS(msgs.get(i));
+                }
 
             }
-            //TODO delete sms from mobil
         }
     }
 

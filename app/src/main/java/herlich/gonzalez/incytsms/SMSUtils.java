@@ -80,26 +80,14 @@ public class SMSUtils {
 
     //https://stackoverflow.com/questions/8614211/deleting-android-sms-programmatically
 
-    public void deleteSMS(String message, String number) {
+    public void deleteSMS(SMS msg) {
         try {
-            //mLogger.logInfo("Deleting SMS from inbox");
-            if (cursor != null && cursor.moveToFirst()) {
-                do {
-                    long id = cursor.getLong(0);
-                    long threadId = cursor.getLong(1);
-                    String address = cursor.getString(2);
-                    String body = cursor.getString(5);
-
-                    if (message.equals(body) && address.equals(number)) {
-                        //mLogger.logInfo("Deleting SMS with id: " + threadId);
-                        context.getContentResolver().delete(
-                                Uri.parse(uri + id), null, null);
-                    }
-                } while (cursor.moveToNext());
-            }
+            System.out.println("borrando mensaje " + msg.get_id());
+            context.getContentResolver().delete(
+                    Uri.parse(uri + msg.get_id()), null, null);
         } catch (Exception e) {
             //mLogger.logError("Could not delete SMS from inbox: " + e.getMessage());
-            System.out.println("ERROR " + e.getMessage());
+            System.out.println("ERROR " + e.getMessage() + " no pude borrar msg " + msg.get_id());
         }
     }
 
