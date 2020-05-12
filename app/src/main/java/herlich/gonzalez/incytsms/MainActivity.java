@@ -32,14 +32,14 @@ public class MainActivity extends AppCompatActivity {
         u = findViewById(R.id.urlText);
         n = findViewById(R.id.tiempoText);
 
-        loadSettings();
-        checkAccess();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         System.out.println("onStart()");
+        loadSettings();
+        checkAccess();
     }
 
     @Override

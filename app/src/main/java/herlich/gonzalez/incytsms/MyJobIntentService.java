@@ -53,11 +53,9 @@ public class MyJobIntentService extends JobIntentService {
             JSONUtils jUtil = new JSONUtils(getApplicationContext(), sd.getUrlPost());
             System.out.println(msgs.size());
             for (int i = 0; i < msgs.size(); i++) {
-                boolean exito = jUtil.postMessage(msgs.get(i));//aqui envia sms por sms
-                if (exito){
-                    //TODO delete sms from mobil
-                    msgSMS.deleteSMS(msgs.get(i));
-                }
+                System.out.println(msgs.get(i).get_id() + " " + msgs.get(i).getBody());
+                jUtil.postMessage(msgs.get(i));//aqui envia sms por sms
+
 
             }
         }

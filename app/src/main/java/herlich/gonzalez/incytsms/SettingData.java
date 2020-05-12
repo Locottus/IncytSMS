@@ -5,6 +5,7 @@ public class SettingData {
     private String urlPost;
     private int delayPeriod;
 
+
     public SettingData(String urlPost, int delayPeriod) {
         this.urlPost = urlPost;
         this.delayPeriod = delayPeriod;
@@ -34,4 +35,5 @@ public class SettingData {
     public void setDelayPeriod(int delayPeriod) {
         this.delayPeriod = delayPeriod;
     }
+
 }

@@ -27,8 +27,8 @@ public class JSONUtils {
     }
 
     //https://www.itsalif.info/content/android-volley-tutorial-http-get-post-put
-    public boolean postMessage(final SMS msg) {
-        final boolean[] exito = {false};//false= no se fue, true = exito
+    public void postMessage(final SMS msg) {
+
         JSONObject postparams = new JSONObject();
         try {
             postparams.put("_id", msg.get_id());
@@ -69,7 +69,9 @@ public class JSONUtils {
                         //System.out.println(response);
                         //if (answer.getMsg().equals("ok"))
                         //    dbo.updateMsgStatus(cm);
-                        exito[0] = true;
+                        SavePrefs sp = new SavePrefs(context);
+                        if ( Integer.valueOf( msg.get_id()) > sp.getLastSMS() )
+                            sp.setLastSMS(Integer.valueOf( msg.get_id()));
                     }
                 },
                 new Response.ErrorListener() {
@@ -78,7 +80,6 @@ public class JSONUtils {
                         //Failure Callback
                         //System.out.println("********************************************BOOO! error enviando json");
                         System.out.println(error);
-                        exito[0] = false;
                     }
                 });
 
@@ -89,7 +90,6 @@ public class JSONUtils {
 
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(jsonObjReq);
-        return exito[0];
     }
 
 }

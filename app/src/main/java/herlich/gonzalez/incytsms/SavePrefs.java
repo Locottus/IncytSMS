@@ -8,6 +8,7 @@ public class SavePrefs {
     private SettingData d;
     private static String URLPOST = "URLPOST";
     private static String TIMEDELAY = "TIMEDELAY";
+    private static String LASTSMS = "LASTSMS";
 
     public SavePrefs(Context context) {
         this.context = context;
@@ -25,6 +26,19 @@ public class SavePrefs {
         SharedPreferences.Editor editor = context.getSharedPreferences(d.getStringSettingsID(), context.MODE_PRIVATE).edit();
         editor.putString(URLPOST, d.getUrlPost());
         editor.putInt(TIMEDELAY, d.getDelayPeriod());
+        editor.apply();
+        editor.commit();
+    }
+
+    public int getLastSMS(){
+        SharedPreferences prefs = context.getSharedPreferences(d.getStringSettingsID(), context.MODE_PRIVATE);
+        return prefs.getInt(LASTSMS, 0);//DEVUELVE EL ULTIMO SMS ENVIADO
+    }
+
+    public void setLastSMS(int id){
+        System.out.println("LAST SMS SENT: " + id);
+        SharedPreferences.Editor editor = context.getSharedPreferences(d.getStringSettingsID(), context.MODE_PRIVATE).edit();
+        editor.putInt(LASTSMS, id);
         editor.apply();
         editor.commit();
     }

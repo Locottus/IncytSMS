@@ -2,9 +2,7 @@ package herlich.gonzalez.incytsms;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.net.DnsResolver;
 import android.net.Uri;
-
 import java.util.ArrayList;
 
 
@@ -20,6 +18,8 @@ public class SMSUtils {
 
     public ArrayList<SMS> readSMS() {
         ArrayList<SMS> msgs = new ArrayList<>();
+        SavePrefs sp = new SavePrefs(context);
+        int lastMessage = sp.getLastSMS();
         System.out.println("***********************************************LEYENDO SMS********************************************");
         //Cursor cursor = getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
         if (cursor.moveToFirst()) { // must check the result to prevent exception
@@ -66,8 +66,8 @@ public class SMSUtils {
                         msg.setError_code(cursor.getString(idx));
 
                 }
-
-                msgs.add(msg);
+                if (Integer.valueOf(msg.get_id()) > lastMessage)
+                    msgs.add(msg);
 
             } while (cursor.moveToNext());
         } else {
