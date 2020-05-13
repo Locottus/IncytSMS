@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     EditText u;
     EditText n;
+    TextView t;
     SavePrefs sp;
 
     @Override
@@ -31,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
         sp = new SavePrefs(getApplicationContext());
         u = findViewById(R.id.urlText);
         n = findViewById(R.id.tiempoText);
+        t = findViewById(R.id.txtCounter);
+        checkAccess();
 
     }
 
@@ -39,8 +43,13 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         System.out.println("onStart()");
         loadSettings();
-        checkAccess();
+        refreshcounter();
     }
+
+    private void refreshcounter() {
+        t.setText(String.valueOf(sp.getLastSMS()));
+    }
+
 
     @Override
     protected void onStop() {
@@ -49,17 +58,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void resetCounter() {
+        sp.setLastSMS(0);
+    }
+
     public void startJobService(View view) {
         System.out.print("intenting to start job service");
         Intent i = new Intent(this, MyJobIntentService.class);
         //i.putExtra("tiempo", 25);
         MyJobIntentService.enqueuedWork(this, i);
+        Toast.makeText(getApplicationContext(), "Servicio Iniciado", Toast.LENGTH_LONG).show();
     }
 
-    private void loadSettings(){
+    private void loadSettings() {
         SettingData sd = sp.getPreferences();
         u.setText(sd.getUrlPost());
-        n.setText(String.valueOf( sd.getDelayPeriod()));
+        n.setText(String.valueOf(sd.getDelayPeriod()));
     }
 
 
@@ -67,9 +81,9 @@ public class MainActivity extends AppCompatActivity {
         if (u.getText().length() > 0 && n.getText().length() > 0) {
             SettingData sd = new SettingData(u.getText().toString(), Integer.valueOf(n.getText().toString()));
             sp.saveSettings(sd);
-            Toast.makeText(getApplicationContext(),"Datos salvados correctamente.",Toast.LENGTH_LONG).show();
-        }else{
-            Toast.makeText(getApplicationContext(),"Hay un campo invalido, por favor, revisar.",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Datos salvados correctamente.", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Hay un campo invalido, por favor, revisar.", Toast.LENGTH_LONG).show();
         }
     }
 

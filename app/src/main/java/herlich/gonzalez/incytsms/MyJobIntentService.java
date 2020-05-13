@@ -55,9 +55,8 @@ public class MyJobIntentService extends JobIntentService {
             for (int i = 0; i < msgs.size(); i++) {
                 System.out.println(msgs.get(i).get_id() + " " + msgs.get(i).getBody());
                 jUtil.postMessage(msgs.get(i));//aqui envia sms por sms
-
-
             }
+
         }
     }
 
