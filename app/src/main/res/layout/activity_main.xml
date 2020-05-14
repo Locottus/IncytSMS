@@ -60,6 +60,14 @@
             android:textAlignment="center"
             android:textSize="30dp" />
 
+        <TextView
+            android:id="@+id/txtRun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:textSize="30dp" />
+
     </LinearLayout>
 
 

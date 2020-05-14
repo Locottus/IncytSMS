@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     EditText u;
     EditText n;
     TextView t;
+    TextView r;
     SavePrefs sp;
 
     @Override
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         u = findViewById(R.id.urlText);
         n = findViewById(R.id.tiempoText);
         t = findViewById(R.id.txtCounter);
+        r = findViewById(R.id.txtRun);
         checkAccess();
 
     }
@@ -47,7 +49,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void refreshcounter() {
+
         t.setText(String.valueOf(sp.getLastSMS()));
+        r.setText(sp.getLastRun());
     }
 
 

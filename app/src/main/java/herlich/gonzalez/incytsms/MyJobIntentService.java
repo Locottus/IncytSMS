@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import androidx.core.app.JobIntentService;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class MyJobIntentService extends JobIntentService {
 
@@ -39,9 +41,11 @@ public class MyJobIntentService extends JobIntentService {
     }
 
     private void thread() {
-
+        Date currentTime;
+        SettingData sd;
+        SavePrefs sp = new SavePrefs(this);
         while(true) {
-            SettingData sd = loadSettings();//get settings on the fly
+            sd = loadSettings();//get settings on the fly
             try {
                 Thread.sleep(60000 * sd.getDelayPeriod());//TODO MODIFICAR EL CALCULO
             } catch (InterruptedException e) {
@@ -56,7 +60,8 @@ public class MyJobIntentService extends JobIntentService {
                 System.out.println(msgs.get(i).get_id() + " " + msgs.get(i).getBody());
                 jUtil.postMessage(msgs.get(i));//aqui envia sms por sms
             }
-
+            currentTime = Calendar.getInstance().getTime();
+            sp.setLastRun(currentTime.toString());
         }
     }
 

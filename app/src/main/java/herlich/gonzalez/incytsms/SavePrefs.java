@@ -9,6 +9,7 @@ public class SavePrefs {
     private static String URLPOST = "URLPOST";
     private static String TIMEDELAY = "TIMEDELAY";
     private static String LASTSMS = "LASTSMS";
+    private static String LASTRUN = "LASTRUN";
 
     public SavePrefs(Context context) {
         this.context = context;
@@ -17,7 +18,7 @@ public class SavePrefs {
     public SettingData getPreferences() {
         SharedPreferences prefs = context.getSharedPreferences(d.getStringSettingsID(), context.MODE_PRIVATE);
         String urlPost = prefs.getString(URLPOST, "https://arcgis-web.url.edu.gt/incyt/api/sms/postSMS");
-        int timeDelay = prefs.getInt(TIMEDELAY, 60);//UNA HORA DEFAULT VALUE
+        int timeDelay = prefs.getInt(TIMEDELAY, 10);//UNA HORA DEFAULT VALUE
         return new SettingData(urlPost, timeDelay);
     }
 
@@ -41,6 +42,19 @@ public class SavePrefs {
         editor.putInt(LASTSMS, id);
         editor.apply();
         editor.commit();
+    }
+
+    public void setLastRun(String date){
+        System.out.println("LAST SMS RUN: " + date);
+        SharedPreferences.Editor editor = context.getSharedPreferences(d.getStringSettingsID(), context.MODE_PRIVATE).edit();
+        editor.putString(LASTRUN, date);
+        editor.apply();
+        editor.commit();
+    }
+
+    public String getLastRun(){
+        SharedPreferences prefs = context.getSharedPreferences(d.getStringSettingsID(), context.MODE_PRIVATE);
+        return prefs.getString(LASTRUN, "N/A");//DEVUELVE EL ULTIMO SMS ENVIADO
     }
 
 }
