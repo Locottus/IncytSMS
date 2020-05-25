@@ -25,7 +25,7 @@ public class MyJobIntentService extends JobIntentService {
     public void onCreate() {
         super.onCreate();
         Log.i(TAG, "onCreate myJobIntentService Thread Name: " + Thread.currentThread().getName());
-        //Toast.makeText(this, "task Execution starts ", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "task Execution starts ", Toast.LENGTH_LONG).show();
     }
 
     @Override

@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     TextView t;
     TextView r;
     SavePrefs sp;
-
+    boolean running;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
         t = findViewById(R.id.txtCounter);
         r = findViewById(R.id.txtRun);
         checkAccess();
-
+        running = true;
+        refreshStats();
     }
 
     @Override
@@ -61,6 +62,11 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("onStop()");
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        running = false;
+    }
 
     public void resetCounter() {
         sp.setLastSMS(0);
@@ -121,5 +127,20 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    private void refreshStats()
+    {
+        Thread sr = new Thread(new Runnable() {
+            public void run() {
 
+                while(running) {
+                    refreshcounter();
+                    try {
+                        Thread.sleep(Integer.valueOf(r.getText().toString()));
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
 }
