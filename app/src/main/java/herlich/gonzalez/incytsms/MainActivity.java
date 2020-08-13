@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -20,12 +22,19 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    TelephonyManager telephonyManager;
+    myPhoneStateListener psListener;
+    TextView txtSignalStr;
+
     EditText u;
     EditText n;
     TextView t;
     TextView r;
     SavePrefs sp;
     boolean running;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +48,13 @@ public class MainActivity extends AppCompatActivity {
         checkAccess();
         running = true;
         refreshStats();
+
+        //CODIGO PARA FORTALEZA DE SEÑAL
+        /*psListener = new myPhoneStateListener();
+        telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        telephonyManager.listen(psListener, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
+        */
+
     }
 
     @Override
